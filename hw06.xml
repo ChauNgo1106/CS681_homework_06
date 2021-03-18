@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- To run this build script, type: ant -f hw.xml on a shell. -->
+<project name="student" basedir="." default="clean">
+	<property environment="env" />
+	<echo message="JUNIT: ${env.JUNIT}" />
+	<echo message="ANT_HOME: ${env.ANT_HOME}" />
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+
+	<path id="classpath">
+		<pathelement location="bin" />
+	</path>
+	<echo message="${toString:classpath}" />
+
+	<target name="init">
+		<mkdir dir="${bin}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${bin}" includeAntRuntime="no">
+			<classpath refid="classpath" />
+			<include name="edu/umb/cs681/RunnableCancellablePrimeGenerator.java" />
+		</javac>
+	</target>
+
+	<target name="run" depends="compile">
+		<java classname="edu.umb.cs681.RunnableCancellablePrimeGenerator"
+			classpathref="classpath" fork="true" />
+	</target>
+
+	<target name="clean" depends="run">
+		<delete includeemptydirs="true">
+			<fileset dir="${bin}/edu/umb/cs681" includes="**/*" />
+		</delete>
+	</target>
+
+</project>
